@@ -1,0 +1,28 @@
+.foot1{
+    height: 15vh;
+    background-color: blanchedalmond;
+    width: 84.3cvh;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.foot2{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.foot3{
+    padding-top: 15px;
+}
+
+.foot4{
+    font-size: medium;
+    line-height: 15px;
+}
+
+.foot5{
+    text-align: center;
+}

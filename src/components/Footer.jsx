@@ -19,7 +19,7 @@ function Footer(){
                     </div>
                 </div>
                 <center><p>
-                        <CrIcon fontSize="small" /> 2015 Tatvasoft.com all rights reserved
+                        <CrIcon fontSize="small"/> 2015 Tatvasoft.com all rights reserved
                 </p></center>
             </div>
         </>

@@ -20,14 +20,14 @@ function Header(){
                     </div>
                 </div>
                 <div className="head4">
-                    <Button variant="text">Login</Button>
-                    <Button variant="text">Register</Button>
+                    <Button variant="text" href="/login">Login</Button>
+                    <Button variant="text" href="/register">Register</Button>
                     <Button variant="outlined" startIcon={<Cart />}>Cart</Button>
                 </div>
             </div>
             <div className="head5">
                 <TextField id="outlined-basic" label="What are you looking for..." variant="outlined" size="small" style={{marginRight:"10px"}} />
-                <Button variant="contained" color="success" startIcon={<SearchIcon />} style={{marginRight:"10px"}} >Search</Button>
+                <Button variant="contained" color="success" style={{marginRight:"10px"}} startIcon={<SearchIcon />}>Search</Button>
                 <Button variant="contained" color="error">Cancel</Button>
             </div>
         </div>

@@ -17,7 +17,7 @@ function App(){
       <div className="body">
         <BrowserRouter>
           <Routes>
-            <Route path="/" Component={Register}></Route>
+            <Route path="/register" Component={Register}></Route>
             <Route path="/product-list" Component={ProductList}></Route>
             <Route path="/login" Component={Login}></Route>
           </Routes>

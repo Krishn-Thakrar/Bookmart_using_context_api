@@ -6,6 +6,8 @@ import ProductList from "./pages/ProductList";
 import Register from "./pages/Register";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App(){
   return(
@@ -15,6 +17,7 @@ function App(){
         <Header />
       </div>
       <div className="body">
+        <ToastContainer />
         <BrowserRouter>
           <Routes>
             <Route path="/register" Component={Register}></Route>

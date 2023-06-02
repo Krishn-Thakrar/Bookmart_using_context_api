@@ -1,38 +1,66 @@
-import React from "react";
-import "./header.css"
-import Logo from '../assets/images/logo.png'
-import SearchIcon from '@mui/icons-material/SearchOutlined';
-import Cart from '@mui/icons-material/ShoppingCart';
-import { Button, TextField } from "@mui/material";
+import React, { useMemo, useState } from "react";
+import Logo from '../assets/logo.png'
+import { Button } from "@mui/material";
+import CartImg from '@mui/icons-material/ShoppingCart';
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../context/auth";
+import shared from "../utils/shared";
 
 function Header(){
+    const navigate = useNavigate();
+    const authContext = useAuthContext();
+
+    const logOut = () => {
+        authContext.signOut();
+    };
+
+    const items = useMemo(() => {
+        return shared.NavigationItems.filter(
+            (item) => {
+                !item.access.length || item.access.includes(authContext.user.roleId)
+            }
+        );
+    }, [authContext.user]);
+
     return(
         <>
-        <div className="head1">
-            <div className="head2">
-                <div className="head3">
-                    <div className="he">
-                        <img src={Logo} alt="App Logo" height="72px" width="72px" />
-                    </div>
-                    <div className="hea">
-                        <h1>Tatvasoft</h1>
-                        <p>sculpting thoughts...</p>
-                    </div>
+        <div style={{display: "flex", justifyContent:"space-between", marginTop: "25px"}}>
+            <div style={{display: "flex"}}>
+                <div style={{marginLeft: "50px"}}>
+                    <img src={Logo} alt="App Logo" style={{height: "65px", width: "65px"}} />
                 </div>
-                <div className="head4">
-                    <Button variant="text" href="/login">Login</Button>
-                    <Button variant="text" href="/register">Register</Button>
-                    <Button variant="outlined" startIcon={<Cart />}>Cart</Button>
+                <div style={{lineHeight: "5px"}}>
+                    <p>
+                        <h1>TatvaSoft</h1>
+                        Sculpting Thoughts....
+                    </p>
                 </div>
             </div>
-            <div className="head5">
-                <TextField id="outlined-basic" label="What are you looking for..." variant="outlined" size="small" style={{marginRight:"10px"}} />
-                <Button variant="contained" color="success" style={{marginRight:"10px"}} startIcon={<SearchIcon />}>Search</Button>
-                <Button variant="contained" color="error">Cancel</Button>
+            <div style={{display: "flex", columnGap: "10px", marginRight: "15px"}}>
+                {!authContext.user.id && (
+                    <>
+                        <Link to="/login">
+                            <Button variant="text">Login</Button>
+                        </Link>
+                        <Link to="/register">
+                            <Button variant="text">Register</Button>
+                        </Link>
+                    </>
+                )}
+                {items.map( (item, index) => {
+                    <>
+                        <Button key={index} variant="text" onClick={() => {navigate(item.route);}}>{item.name}</Button>
+                    </>
+                })}
+                <Button variant="outlined" startIcon={<CartImg />}>{0} Cart</Button>
+                {authContext.user.id ? (
+                    <Button variant="contained" onClick={() => {logOut();}}>LogOut</Button>
+                ) : null}
             </div>
         </div>
+        <br />
         </>
-    );
+    )
 }
 
 export default Header;

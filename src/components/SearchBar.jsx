@@ -4,6 +4,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import CancelIcon from '@mui/icons-material/CancelOutlined';
 import bookService from "../service/book.service";
 import { useState } from "react";
+import { useAuthContext } from "../context/auth";
+import { useCartContext } from "../context/cart";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import shared from "../utils/shared";
 
 function SearchBar() {
     const [query, setQuery] = useState("");
@@ -18,16 +23,43 @@ function SearchBar() {
     const search = () => {
         searchBook();
         setOpenSearchResult(true);
-    }
+    };
+
+    const navigate = useNavigate();
+    const authContext = useAuthContext();
+    const cartContext = useCartContext();
+
+    const addToCart = (book) => {
+        if (!authContext.user.id) {
+          navigate("/login");
+          toast.error("Please login before adding books to cart");
+        } else {
+          shared
+            .addToCart(book, authContext.user.id)
+            .then((res) => {
+              if (res.error) {
+                toast.error(res.error);
+              } else {
+                toast.success("Item added in cart");
+                cartContext.updateCart();
+              }
+            })
+            .catch((err) => {
+              toast.warning(err);
+            });
+        }
+    };
+
     return (
         <>
             <div style={{ display: "flex", justifyContent: "center", columnGap: "10px" }}>
                 <TextField id="outlined-basic" label="What are you looking for..." variant="outlined" style={{ height: "20px" }} onChange={(e) => { setQuery(e.target.value); }} />
                 <Button variant="contained" color="success" startIcon={<SearchIcon />} style={{ height: "55px" }} onClick={search} >Search</Button>
-                <Button variant="contained" color="error" startIcon={<CancelIcon />} style={{ height: "55px" }} onClick={() => { setOpenSearchResult(false); setQuery(""); }} >Cancel</Button>
+                <Button variant="contained" color="error" startIcon={<CancelIcon />} style={{ height: "55px" }} onClick={() => { setOpenSearchResult(false); setQuery(); }} >Cancel</Button>
             </div>
             {openSearchResult && (
                 <div style={{ position: "absolute", padding: "15px", borderRadius: "5px", backgroundColor: "aquamarine"}}>
+                    {bookList?.length === 0 ? (<p>No Product Found</p>) : (
                     <List>
                         {bookList?.length > 0 && bookList.map((item, index) => (
                             <ListItem key={index}>
@@ -38,7 +70,7 @@ function SearchBar() {
                                     </div>
                                     <div>
                                         <p>{item.price}</p>
-                                        <Button sx={{ color: "#f14d54", textTransform: "capitalize" }}>
+                                        <Button sx={{ color: "#f14d54", textTransform: "capitalize" }} onClick={() => addToCart(item)} >
                                             Add to Cart
                                         </Button>
                                     </div>
@@ -46,6 +78,7 @@ function SearchBar() {
                             </ListItem>
                         ))}
                     </List>
+                    )}
                 </div>
             )}
         </>

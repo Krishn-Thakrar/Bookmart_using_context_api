@@ -56,7 +56,7 @@ function UpdateProfile() {
 
     return(
         <>
-            <h1>Update Profile</h1>
+            <center><h1>Update Profile</h1></center>
             <Formik
                 initialValues={initialValuestate}
                 validationSchema={validate}
@@ -73,18 +73,33 @@ function UpdateProfile() {
                     isSubmitting,
                 }) => (
                     <form onSubmit={handleSubmit}>
-                        <TextField value={values.firstName} label="First Name" name="firstName" onChange={handleChange} onBlur={handleBlur} />
+                        <div className="fl" style={{display: "flex", justifyContent: "center", columnGap: "300px"}}>
+                            <TextField value={values.firstName} label="First Name" name="firstName" onChange={handleChange} onBlur={handleBlur} />
+                            <TextField value={values.lastName} label="Last Name" name="lastName" onChange={handleChange} onBlur={handleBlur} />
+                        </div>
+                        <div className="fle" style={{display: "flex", justifyContent: "center", columnGap: "400px"}}>
                         <p style={{position:"relative", color:"red", lineHeight:"2px", fontSize:"14px"}}>{errors.firstName}</p>
-                        <TextField value={values.lastName} label="Last Name" name="lastName" onChange={handleChange} onBlur={handleBlur} />
                         <p style={{position:"relative", color:"red", lineHeight:"2px", fontSize:"14px"}}>{errors.lastName}</p>
-                        <TextField value={values.email} label="Email" name="email" onChange={handleChange} onBlur={handleBlur} />
-                        <p style={{position:"relative", color:"red", lineHeight:"2px", fontSize:"14px"}}>{errors.email}</p>
-                        <TextField value={values.newPassword} label="New Password" name="newPassword" onChange={handleChange} onBlur={handleBlur} />
+                        </div>
+                        <br /><br />
+                        <div className="email" style={{marginLeft: "365px"}}>
+                            <TextField value={values.email} label="Email" name="email" onChange={handleChange} onBlur={handleBlur} />
+                            <p style={{position:"relative", color:"red", lineHeight:"2px", fontSize:"14px"}}>{errors.email}</p>
+                        </div>
+                        <br /><br />
+                        <div className="pass" style={{display: "flex", justifyContent: "center", columnGap: "300px"}}>
+                            <TextField value={values.newPassword} label="New Password" name="newPassword" onChange={handleChange} onBlur={handleBlur} />
+                            <TextField value={values.confirmPassword} label="Confirm Password" name="confirmPassword" onChange={handleChange} onBlur={handleBlur} />
+                        </div>
+                        <div className="passe" style={{display: "flex", justifyContent: "center", columnGap: "380px"}}>
                         <p style={{position:"relative", color:"red", lineHeight:"2px", fontSize:"14px"}}>{errors.newPassword}</p>
-                        <TextField value={values.confirmPassword} label="Confirm Password" name="confirmPassword" onChange={handleChange} onBlur={handleBlur} />
                         <p style={{position:"relative", color:"red", lineHeight:"2px", fontSize:"14px"}}>{errors.confirmPassword}</p>
-                        <Button variant="contained" type="submit">Save</Button>
-                        <Button variant="contained" onClick={() => {navigate("/product-list")}}>Cancel</Button>
+                        </div>
+                        <br /><br />
+                        <div className="button" style={{display: "flex", justifyContent: "center", columnGap: "50px"}}>
+                            <Button variant="contained" type="submit">Save</Button>
+                            <Button variant="contained" onClick={() => {navigate("/product-list")}}>Cancel</Button>
+                        </div>
                     </form>
                 )}
             </Formik>

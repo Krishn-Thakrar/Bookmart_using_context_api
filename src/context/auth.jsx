@@ -1,76 +1,78 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { createContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import shared from "../utils/shared";
 import { toast } from "react-toastify";
+import shared from "../utils/shared";
 
-const initialUserValue = {
-    email: "",
-    firstName: "",
-    id: 0,
-    lastName: "",
-    password: "",
-    role: "",
-    roleId: 0,
+const intialUserValue = {
+  email: "",
+  firstName: "",
+  id: 0,
+  lastName: "",
+  password: "",
+  role: "",
+  roleId: 0,
 };
 
-const initialstate = {
-    setUser: () => {},
-    user: initialUserValue,
-    signOut: () => {},
+const initialState = {
+  setUser: () => {},
+  user: intialUserValue,
+  signOut: () => {},
 };
 
-const authContext = createContext(initialstate);
+const authContext = createContext(initialState);
 
 export const AuthWrapper = ({ children }) => {
-    const [user, _setUser] = useState(initialUserValue);
-    const navigate = useNavigate();
-    const { pathname } = useLocation();
+  const [user, _setUser] = useState(intialUserValue);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
-    useEffect(() => {
-        const str = JSON.parse(localStorage.getItem("user")) || initialUserValue;
-        if (str.id) {
-            _setUser(str);
-        }
-        if (!str.id) {
-            navigate("/");
-        }
-    }, []);
+  useEffect(() => {
+    const str = JSON.parse(localStorage.getItem("user")) || intialUserValue;
+    if (str.id) {
+      _setUser(str);
+    }
+    if (!str.id) {
+      navigate("/login");
+    }
+    // eslint-disable-next-line
+  }, []);
 
-    useEffect(() => {
-        if (pathname === "/login" && user.id) {
-            navigate("/productlist")
-        }
-        if (!user.id) {
-            return;
-        }
-        const access = shared.hasAccess(pathname, user);
-        if (!access) {
-            toast.error("You are not authorized to access the page");
-            navigate("/productlist");
-            return;
-        }
-    }, [user, pathname]);
+  useEffect(() => {
+    if (pathname === "/login" && user.id) {
+      navigate("/");
+    }
+    if (!user.id) {
+      return;
+    }
+    const access = shared.hasAccess(pathname, user);
+    if (!access) {
+      toast.warning("sorry, you are not authorized to access this page");
+      navigate("/");
+      return;
+    }
+    // eslint-disable-next-line
+  }, [user, pathname]);
 
-    const setUser = (user) => {
-        localStorage.setItem("user", JSON.stringify(user));
-        _setUser(user);
-    };
+  const setUser = (user) => {
+    localStorage.setItem("user", JSON.stringify(user));
+    _setUser(user);
+  };
 
-    const signOut = () => {
-        setUser(initialUserValue);
-        localStorage.removeItem("user");
-        navigate("/login");
-    };
+  const signOut = () => {
+    setUser(intialUserValue);
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
-    const value = {
-        user,
-        setUser,
-        signOut,
-    };
+  const value = {
+    user,
+    setUser,
+    signOut,
+  };
 
-    return <authContext.Provider value={value}>{children}</authContext.Provider>
+  return <authContext.Provider value={value}>{children}</authContext.Provider>;
 };
-
 export const useAuthContext = () => {
-    return useContext(authContext);
+  return useContext(authContext);
 };

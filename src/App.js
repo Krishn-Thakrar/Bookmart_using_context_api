@@ -17,6 +17,7 @@ import User from "./pages/User";
 import EditUser from "./pages/EditUser";
 import CartPage from "./pages/CartPage";
 import UpdateProfile from "./pages/UpdateProfile";
+import { CartWrapper } from "./context/cart";
 
 function App(){
   return(
@@ -24,6 +25,7 @@ function App(){
       <div className="main">
         <BrowserRouter>
           <AuthWrapper>
+            <CartWrapper>
             <ToastContainer />
             <Header />
             <SearchBar />
@@ -44,6 +46,7 @@ function App(){
               <Route path="/update-profile" Component={UpdateProfile}></Route>
             </Routes>
             <Footer />
+            </CartWrapper>
           </AuthWrapper>
         </BrowserRouter>
       </div>

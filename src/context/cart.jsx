@@ -22,7 +22,7 @@ export const CartWrapper = ({ children }) => {
     if (updatedCartList) {
       setCartData(updatedCartList);
     } else if (authContext.user.id) {
-      cartService.getList(authContext.user.id).then((res) => setCartData(res));
+      cartService.getList(authContext.user.id).then((res) =>{  setCartData(res.data.result);});
     }
   };
 
